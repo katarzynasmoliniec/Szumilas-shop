@@ -1,0 +1,1 @@
+CREATE USER szumilasapp PASSWORD 'szumilasapp'
