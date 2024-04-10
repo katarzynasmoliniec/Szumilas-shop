@@ -481,7 +481,8 @@ input.au-input.au-input-xl{
     text-transform:capitalize;
     line-height:inherit
 }
-.header-mobile .navbar-mobile .navbar-mo
+.header-mobile .navbar-mobile .navbar-mobile-list li a:hover{
+    color:#a36509
 }
 .header-mobile .navbar-mobile .navbar-mobile-list li a>i{
     margin-right:19px
