@@ -560,6 +560,11 @@ input.au-input.au-input-xl{
     color:#585858
 }
 
+ngb-pagination .page-item.active .page-link {
+    background-color: #c99e4f;
+    border-color: #c99e4f;
+  }
+
 /* 
  * ----------------------------
  * Shopping Cart Checkout
@@ -715,7 +720,7 @@ table.table.table-bordered th{
  * ----------------------------
  */
 
- .price{
+.price{
     margin:15px 0 0;
     font-weight:800;
     color:#a55514;
@@ -727,6 +732,7 @@ table.table.table-bordered th{
 .detail-img{
     width: 30%
 }
+
 /**/
 
 /* 
@@ -735,7 +741,7 @@ table.table.table-bordered th{
  * ----------------------------
  */
 
- .btn-info{
+.btn-info{
     color:#fff;
     background-color:#0da8e4!important;
     border-color:#0da8e4!important
@@ -976,8 +982,9 @@ footer ul li{
         margin-left:15px
     }
     .footer-pagination{
-        text-align:center
+        text-align:center;
     }
+
     .product-box{
         text-align:centerg
     }

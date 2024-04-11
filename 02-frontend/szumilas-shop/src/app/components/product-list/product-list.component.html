@@ -10,12 +10,13 @@
 
                     <div class="product-box">
                         <a routerLink="/products/{{ tempProduct.id }}" class="link-body-emphasis link-underline">
-                        <img src="{{ tempProduct.imageUrl }}" class="img-responsive">
+                            <img src="{{ tempProduct.imageUrl }}" class="img-responsive">
                         </a>
                         <hr>
 
-                        <a routerLink="/products/{{ tempProduct.id }}" class="link-secondary link-offset-2 link-underline link-underline-opacity-0">
-                        <h1>{{ tempProduct.name }}</h1>
+                        <a routerLink="/products/{{ tempProduct.id }}"
+                            class="link-secondary link-offset-2 link-underline link-underline-opacity-0">
+                            <h1>{{ tempProduct.name }}</h1>
                         </a>
                         <div class="price">{{ tempProduct.unitPrice | currency:'PLN' }}</div>
                         <a href="#" class="primary-btn link-underline link-underline-opacity-0">Dodaj do koszyka</a>
@@ -26,8 +27,31 @@
                 <div *ngIf="products?.length == 0" class="alert alert-warning col-md-12" role="alert">
                     Nie znaleziono produktów.
                 </div>
-                
             </div>
+            <!-- begin footer-->
+            <div class="footer-pagination">
+                <div class="row">
+                    <div class="row">
+                        <div class="col-md-9" style="padding-left: 30%">
+                            <ngb-pagination [(page)]="thePageNumber" 
+                                [pageSize]="thePageSize"
+                                [collectionSize]="theTotalElements" [maxSize]="5" [boundaryLinks]="true"
+                                (pageChange)="listProducts()">
+                            </ngb-pagination>
+                        </div>
+                        <div class="col-md-3 mt-2" style="text-align: right;">
+                            <span class="p-1" style="color: #a55514;">Ilość stron</span>
+                            <select #myPageSelect (change)="updatePageSize(myPageSelect.value)">
+                                <option selected="true">5</option>
+                                <option>10</option>
+                                <option>20</option>
+                                <option>50</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end footer-->
         </div>
     </div>
 </div>
