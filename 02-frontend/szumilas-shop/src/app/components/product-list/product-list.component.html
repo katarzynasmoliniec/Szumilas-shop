@@ -14,8 +14,13 @@
                         <div class="price">{{ tempProduct.unitPrice | currency:'PLN' }}</div>
                         <a href="#" class="primary-btn">Dodaj do koszyka</a>
                     </div>
-
                 </div>
+
+                <!-- if products empty then display a message-->
+                <div *ngIf="products?.length == 0" class="alert alert-warning col-md-12" role="alert">
+                    Nie znaleziono produktów.
+                </div>
+                
             </div>
         </div>
     </div>
