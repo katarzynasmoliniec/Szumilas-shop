@@ -746,7 +746,7 @@ table.table.table-bordered th{
     background-color:#0da8e4!important;
     border-color:#0da8e4!important
 }
-a.primary-btn{
+.primary-btn{
     background:#8a5b03;
     padding:7px 20px;
     text-align:center;
@@ -756,7 +756,7 @@ a.primary-btn{
     font-size:14px;
     margin-top:5px;
 }
-a.primary-btn:hover{
+.primary-btn:hover{
     background:#e0a029;
     color:#fff
 }
@@ -986,7 +986,7 @@ footer ul li{
     }
 
     .product-box{
-        text-align:centerg
+        text-align:center;
     }
     .page-container{
         position:relative;
