@@ -284,15 +284,15 @@ input.au-input.au-input-xl{
     right:0;
     min-width:95px;
     color:#fff;
-    border:1px solid #205b8d;
+    border:1px solid #a56e08;;
     -webkit-border-radius:3px;
     -moz-border-radius:3px;
     border-radius:43px;
-    background:#205b8d
+    background:#a56e08
 }
 
 .au-btn-submit:hover{
-    background:#05143f
+    background:#795005
 }
 
 .au-btn-submit>i{
@@ -723,6 +723,10 @@ table.table.table-bordered th{
 .detail-section{
     margin-top:60px
 }
+
+.detail-img{
+    width: 30%
+}
 /**/
 
 /* 
@@ -744,7 +748,7 @@ a.primary-btn{
     color:#fff;
     border-radius:2px;
     font-size:14px;
-    margin-top:5px
+    margin-top:5px;
 }
 a.primary-btn:hover{
     background:#e0a029;
@@ -987,11 +991,11 @@ footer ul li{
         right:10px;
         min-width:85px;
         color:#fff;
-        border:1px solid #205b8d;
+        border:1px solid #a56e08;
         -webkit-border-radius:3px;
         -moz-border-radius:3px;
         border-radius:0;
-        background:#205b8d
+        background:#a56e08
     }
     input.au-input.au-input-xl{
         border-radius:0!important;
