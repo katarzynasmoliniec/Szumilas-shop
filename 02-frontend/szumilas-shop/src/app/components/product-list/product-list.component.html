@@ -18,7 +18,7 @@
                             class="link-secondary link-offset-2 link-underline link-underline-opacity-0">
                             <h1>{{ tempProduct.name }}</h1>
                         </a>
-                        <div class="price">{{ tempProduct.unitPrice | currency:'PLN' }}</div>
+                        <div class="price">{{ tempProduct.unitPrice }} zł</div>
                         <button (click)="addToCart(tempProduct)" class="primary-btn">Dodaj do koszyka</button>
                     </div>
                 </div>

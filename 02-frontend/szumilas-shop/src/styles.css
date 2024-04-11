@@ -251,11 +251,11 @@ input.au-input.au-input-xl{
 }
 
 .total{
-    background:#205b8d;
+    background:#a56e08;
     line-height:43px;
     color:#fff;
     border-radius:30px;
-    border:1px solid #0da8e4;
+    border:2px solid #a56e08;
     float:left;
     margin-top:7px;
     padding-left:17px
@@ -284,7 +284,7 @@ input.au-input.au-input-xl{
     right:0;
     min-width:95px;
     color:#fff;
-    border:1px solid #a56e08;;
+    border:1px solid #a56e08;
     -webkit-border-radius:3px;
     -moz-border-radius:3px;
     border-radius:43px;
@@ -661,7 +661,7 @@ label.date{
     top:-1px;
     width:9px;
     height:15px;
-    border:solid #0da8e4;
+    border:solid #a56e08;
     border-width:0 4px 4px 0;
     -webkit-border-radius:2px;
     -moz-border-radius:2px;
@@ -696,9 +696,10 @@ table.table.table-bordered{
     border:1px solid #dee2e6
 }
 table.table.table-bordered th{
-    BACKGROUND:#0da8e4;
+    background: rgb(152,116,13);
+    background: linear-gradient(0deg, rgba(152,116,13,1) 49%, rgba(235,224,217,1) 100%);
     color:#fff;
-    font-size:14px;
+    font-size:16px;
     padding:7px
 }
 .table-responsive{
@@ -743,8 +744,8 @@ table.table.table-bordered th{
 
 .btn-info{
     color:#fff;
-    background-color:#0da8e4!important;
-    border-color:#0da8e4!important
+    background-color:#a56e08!important;
+    border-color:#a56e08!important
 }
 .primary-btn{
     background:#8a5b03;
@@ -832,7 +833,7 @@ footer ul li{
         font-size:22px;
         float:left;
         margin-top:16px;
-        color:#205b8d;
+        color:#a56e08;
         margin-left:15px
     }
     .header-mobile .header-mobile-bar{
@@ -927,7 +928,7 @@ footer ul li{
         font-size:22px;
         float:left;
         margin-top:16px;
-        color:#205b8d;
+        color:#a56e08;
         margin-left:15px
     }
         .header-wrap2{
@@ -978,7 +979,7 @@ footer ul li{
         font-size:22px;
         float:left;
         margin-top:16px;
-        color:#205b8d;
+        color:#a56e08;
         margin-left:15px
     }
     .footer-pagination{
@@ -1018,7 +1019,7 @@ footer ul li{
         font-size:18px;
         float:left;
         margin-top:16px;
-        color:#03a9f4;
+        color:#a56e08;
         margin-left:15px
     }
     .total span{
@@ -1031,11 +1032,11 @@ footer ul li{
         margin-left:6px
     }
     .total{
-        background:#205b8d;
+        background:#a56e08;
         line-height:30px;
         color:#fff;
         border-radius:30px;
-        border:1px solid #205b8d;
+        border:1px solid #a56e08;
         float:left;
         margin-top:9px;
         padding-left:12px
