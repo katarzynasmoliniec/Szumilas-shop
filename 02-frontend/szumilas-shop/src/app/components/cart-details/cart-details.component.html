@@ -2,6 +2,9 @@
     <div class="section-content section-content-p30">
         <div class="container-fluid">
 
+            <h3>Koszyk</h3>
+            <hr>
+
             <div *ngIf="cartItems.length > 0">
                 <table class="table table-bordered">
                     <tr>
@@ -44,10 +47,11 @@
                     </tr>
                     <tr>
                         <td colspan="2"></td>
-                        <td style="font-weight: bold;">
+                        <td style="font-weight: bold; border: 1px solid #ccc;">
                             <p>Ilość produków w koszyku: {{ totalQuantity }}</p>
                             <p>Wysyłka: Bezpłatna</p>
-                            <p>Suma: {{ totalPrice }} zł</p>
+                            <p>Wartość produktów: {{ totalPrice }} zł</p>
+                            <button routerLink="/checkout" class="primary-btn m-1">Dalej</button>
                         </td>
                     </tr>
                 </table>
