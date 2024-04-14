@@ -5,15 +5,11 @@ export class FormValidation {
     // whitespace validation
     static notOnlyWhiteSpace(control: FormControl): ValidationErrors | null {
 
-         // check if string only contains whitespace
-         if ((control.value.trim().length === 0) && (control.value != null)) {
-
-            // invalid, return error object
-            return { 'notOnlyWhitespace': true };
-        }
-        else {
-            // valid, return null
-            return null;
-        }
+          // check if control(string) consists of only whitespaces
+    if ((control.value != null) && (control.value.trim().length === 0 )) {
+        return { 'onlyWhitespace': true };
+      } else {
+        return null;
+      }
     }
 }

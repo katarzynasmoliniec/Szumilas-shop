@@ -18,7 +18,7 @@ CREATE TABLE `country` (
 -- Data for table `country`
 --
 
-INSERT INTO `country` VALUES 
+INSERT INTO `full-stack-szumilasapp`.`country` VALUES 
 (1,'PLN','Polska'),
 (2,'CZ','Czechy'),
 (3,'DE','Niemcy'),

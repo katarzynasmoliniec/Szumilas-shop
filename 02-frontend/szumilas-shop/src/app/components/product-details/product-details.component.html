@@ -1,8 +1,6 @@
 <div class="detail-section">
-    <div class="container-fluid">
-
-        <img src="{{ product.imageUrl }}" class="detail-img mt-5">
-
+    <div *ngIf="product" class="container-fluid">
+        <img src="{{ product.imageUrl }}" alt="product-image" class="detail-img mt-5">
         <h3>{{ product.name }}</h3>
         <h3 class="price">{{ product.unitPrice }} zł</h3>
         <button (click)="addToCart()" class="primary-btn">Dodaj do koszyka</button>
