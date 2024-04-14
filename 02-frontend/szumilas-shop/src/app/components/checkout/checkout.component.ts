@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Country } from 'src/app/overall/country';
 import { SzumilasShopFormService } from 'src/app/services/szumilas-shop-form.service';
+import { FormValidation } from 'src/app/validation/form-validation';
 
 @Component({
   selector: 'app-checkout',
@@ -20,33 +21,67 @@ export class CheckoutComponent implements OnInit {
   countries: Country[] = [];
 
   constructor(private formBuilder: FormBuilder,
-              private szumilasShopFormService: SzumilasShopFormService ) { }
+    private szumilasShopFormService: SzumilasShopFormService) { }
 
   ngOnInit(): void {
 
-    this.checkoutFormGroup = this.formBuilder.group( {
-      customer: this.formBuilder.group( {
-        firstName: [''],
-        lastName: [''],
-        email: ['']
+    this.checkoutFormGroup = this.formBuilder.group({
+      customer: this.formBuilder.group({
+        firstName: new FormControl('',
+          [Validators.required,
+          Validators.minLength(2),
+          FormValidation.notOnlyWhiteSpace]),
+        lastName: new FormControl('',
+          [Validators.required,
+          Validators.minLength(2),
+          FormValidation.notOnlyWhiteSpace]),
+        email: new FormControl('',
+          [Validators.required,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])
       }),
-      shippingAddress: this.formBuilder.group( {
-        street: [''],
-        city: [''],
-        country: [''],
-        zipCode: ['']
+      shippingAddress: this.formBuilder.group({
+        street: new FormControl('',
+          [Validators.required,
+          Validators.minLength(2),
+          FormValidation.notOnlyWhiteSpace]),
+        city: new FormControl('',
+          [Validators.required,
+          Validators.minLength(2),
+          FormValidation.notOnlyWhiteSpace]),
+        country: new FormControl('',
+          [Validators.required]),
+        zipCode: new FormControl('',
+          [Validators.required,
+          Validators.minLength(2),
+          FormValidation.notOnlyWhiteSpace])
       }),
-      billingAddress: this.formBuilder.group( {
-        street: [''],
-        city: [''],
-        country: [''],
-        zipCode: ['']
+      billingAddress: this.formBuilder.group({
+        street: new FormControl('',
+          [Validators.required,
+          Validators.minLength(2),
+          FormValidation.notOnlyWhiteSpace]),
+        city: new FormControl('',
+          [Validators.required,
+          Validators.minLength(2),
+          FormValidation.notOnlyWhiteSpace]),
+        country: new FormControl('',
+          [Validators.required]),
+        zipCode: new FormControl('',
+          [Validators.required,
+          Validators.minLength(2),
+          FormValidation.notOnlyWhiteSpace])
       }),
-      creditCard: this.formBuilder.group( {
-        cardType: [''],
-        nameOnCard: [''],
-        cardNumber: [''],
-        securityCode: [''],
+      creditCard: this.formBuilder.group({
+        cardType: new FormControl('',
+          [Validators.required]),
+        nameOnCard: new FormControl('',
+          [Validators.required,
+          Validators.minLength(2),
+          FormValidation.notOnlyWhiteSpace]),
+        cardNumber: new FormControl('',
+          [Validators.required, Validators.pattern('^[0-9]{16}$')]),
+        securityCode: new FormControl('',
+          [Validators.required, Validators.pattern('^[0-9]{3}$')]),
         expirationMonth: [''],
         expirationYear: ['']
       })
@@ -76,10 +111,29 @@ export class CheckoutComponent implements OnInit {
     )
   }
 
+  get firstName() {return this.checkoutFormGroup.get('customer.firstName');}
+  get lastName() {return this.checkoutFormGroup.get('customer.lastName');}
+  get email() {return this.checkoutFormGroup.get('customer.email');}
+
+  get shippingAddressStreet() {return this.checkoutFormGroup.get('shippingAddress.street');}
+  get shippingAddressCity() {return this.checkoutFormGroup.get('shippingAddress.city');}
+  get shippingAddressZipCode() {return this.checkoutFormGroup.get('shippingAddress.zipCode');}
+  get shippingAddressCountry() {return this.checkoutFormGroup.get('shippingAddress.country');}
+
+  get billingAddressStreet() {return this.checkoutFormGroup.get('billingAddress.street');}
+  get billingAddressCity() {return this.checkoutFormGroup.get('billingAddress.city');}
+  get billingAddressZipCode() {return this.checkoutFormGroup.get('billingAddress.zipCode');}
+  get billingAddressCountry() {return this.checkoutFormGroup.get('billingAddress.country');}
+
+  get creditCardCardType() {return this.checkoutFormGroup.get('creditCard.cardType');}
+  get creditCardNameOnCard() {return this.checkoutFormGroup.get('creditCard.nameOnCard');}
+  get creditCardCardNumber() {return this.checkoutFormGroup.get('creditCard.cardNumber');}
+  get creditCardSecurityCode() {return this.checkoutFormGroup.get('creditCard.securityCode');}
+
   copyShippingAddressToBillingAddress(event: any) {
-    if(event.target.checked) {
+    if (event.target.checked) {
       this.checkoutFormGroup.controls['billingAddress']
-      .setValue(this.checkoutFormGroup.controls['shippingAddress'].value);
+        .setValue(this.checkoutFormGroup.controls['shippingAddress'].value);
     } else {
       this.checkoutFormGroup.controls['billingAddress'].reset();
     }
@@ -87,7 +141,14 @@ export class CheckoutComponent implements OnInit {
 
   onSubmit() {
     console.log("Handling the submit button");
+
+    if(this.checkoutFormGroup.invalid) {
+      this.checkoutFormGroup.markAllAsTouched();
+    }
+
     console.log(this.checkoutFormGroup.get('customer')!.value);
+    console.log("The email address is " + this.checkoutFormGroup.get('customer')!.value.email);
+    
     console.log("The shipping address country is " + this.checkoutFormGroup.get('shippingAddress')!.value.country.name);
   }
 
@@ -99,7 +160,7 @@ export class CheckoutComponent implements OnInit {
     // if the current year equals the selected year, then start with the current month
     let startMonth: number;
 
-    if(currentYear === selectedYear) {
+    if (currentYear === selectedYear) {
       startMonth = new Date().getMonth() + 1;
     } else {
       startMonth = 1;

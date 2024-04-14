@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS `country`;
 
 CREATE TABLE `country` (
   `id` smallint unsigned NOT NULL primary key,
-  `code` varchar(2) DEFAULT NULL,
+  `code` varchar(3) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL
 );
 
