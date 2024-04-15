@@ -34,6 +34,7 @@ CREATE TABLE `customer` (
   `last_name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL
 );
+alter table customer add UNIQUE (email);
 
 --
 -- Table structure for table `orders`
