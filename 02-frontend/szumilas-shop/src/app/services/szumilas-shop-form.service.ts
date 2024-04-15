@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Country } from '../overall/country';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SzumilasShopFormService {
 
-  private countriesUrl = 'http://localhost:8080/api/countries';
+  private countriesUrl = environment.apiUrl + '/countries';
 
   constructor(private httpClient: HttpClient) { }
 
