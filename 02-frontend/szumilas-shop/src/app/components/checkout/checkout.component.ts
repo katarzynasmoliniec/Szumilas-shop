@@ -26,6 +26,8 @@ export class CheckoutComponent implements OnInit {
 
   countries: Country[] = [];
 
+  storage: Storage = sessionStorage;
+
   constructor(private formBuilder: FormBuilder,
     private szumilasShopFormService: SzumilasShopFormService,
     private cartService: CartService,
@@ -35,6 +37,9 @@ export class CheckoutComponent implements OnInit {
   ngOnInit(): void {
 
     this.reviewCartDetails();
+
+    // read theuser's email address from browser storage
+    const theEmail = JSON.parse(this.storage.getItem('userEmail')!);
 
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
@@ -46,7 +51,7 @@ export class CheckoutComponent implements OnInit {
           [Validators.required,
           Validators.minLength(2),
           FormValidation.notOnlyWhiteSpace]),
-        email: new FormControl('',
+        email: new FormControl(theEmail,
           [Validators.required,
           Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])
       }),
@@ -125,12 +130,12 @@ export class CheckoutComponent implements OnInit {
   reviewCartDetails() {
     // subcribe to cartService.totalQuantity
     this.cartService.totalQuantity.subscribe(
-      totalQuantity => this.totalQuantity = this.totalQuantity
+      totalQuantity => this.totalQuantity = totalQuantity
     );
 
     // subcribe to cartService.totalPrice
     this.cartService.totalPrice.subscribe(
-      totalPrice => this.totalPrice = this.totalPrice
+      totalPrice => this.totalPrice = totalPrice
     );
   }
 
@@ -221,6 +226,7 @@ export class CheckoutComponent implements OnInit {
     this.cartService.cartItems = [];
     this.cartService.totalPrice.next(0);
     this.cartService.totalQuantity.next(0);
+    this.cartService.persistCartItems();
 
     // reset the form
     this.checkoutFormGroup.reset();

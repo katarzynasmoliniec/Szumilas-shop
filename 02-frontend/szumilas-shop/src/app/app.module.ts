@@ -1,11 +1,11 @@
-import { NgModule } from '@angular/core';
+import { Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductService } from './services/product.service';
-import { RouterModule, Routes } from '@angular/router';
+import { Router, RouterModule, Routes } from '@angular/router';
 import { ProductCategoryMenuComponent } from './components/product-category-menu/product-category-menu.component';
 import { SearchComponent } from './components/search/search.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
@@ -20,15 +20,29 @@ import { LoginStatusComponent } from './components/login-status/login-status.com
 import {
   OktaAuthModule,
   OktaCallbackComponent,
-  OKTA_CONFIG
+  OKTA_CONFIG,
+  OktaAuthGuard
 } from '@okta/okta-angular';
 import { OktaAuth } from '@okta/okta-auth-js';
 import szumilasAppConfig from './config/szumilas-app-config';
+import { OrderHistoryComponent } from './components/order-history/order-history.component';
 
 const oktaConfig = szumilasAppConfig.oidc;
 const oktaAuth = new OktaAuth(oktaConfig);
 
+function sendToLoginPage(oktaAuth: OktaAuth, injector: Injector) {
+  // User injector to access any service available withn your app
+  const router = injector.get(Router);
+
+  // Redirect the user to your custom login page
+  router.navigate(['/login']);
+}
+
 const routes: Routes = [
+  {path: 'order-history',
+         component: OrderHistoryComponent,
+          canActivate: [OktaAuthGuard],
+          data: {onAuthRequired: sendToLoginPage} },
   {path: 'login/callback', component: OktaCallbackComponent},
   {path: 'login', component: LoginComponent},
   {path: 'checkout', component: CheckoutComponent},
@@ -54,7 +68,8 @@ const routes: Routes = [
     CartStatusComponent,
     CartDetailsComponent,
     LoginComponent,
-    LoginStatusComponent
+    LoginStatusComponent,
+    OrderHistoryComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
