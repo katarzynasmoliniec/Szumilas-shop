@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 @Configuration
-public class DataRestConfiguration implements RepositoryRestConfigurer {
+public class DataRestConfig implements RepositoryRestConfigurer {
 
     @Value("${allowed.origins}")
     private String[] theAllowedOrigins;
@@ -24,7 +24,7 @@ public class DataRestConfiguration implements RepositoryRestConfigurer {
     private EntityManager entityManager;
 
     @Autowired
-    public DataRestConfiguration(EntityManager entityManager) {
+    public DataRestConfig(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
