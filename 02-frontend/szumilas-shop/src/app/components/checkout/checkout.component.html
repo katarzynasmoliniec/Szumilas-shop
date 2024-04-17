@@ -233,106 +233,19 @@
                 </div>
 
                 <!-- Credit Card -->
+
+                <!-- Stripe elements credit card section-->
                 <div formGroupName="creditCard" class="form-area">
+
                     <h3>Płatność</h3>
-
-                    <div class="row">
-                        <div class="col-md-2"> <label>Typ Katry</label></div>
-                        <div class="col-md-9">
-                            <div class="input-space">
-                                <select formControlName="cardType">
-                                    <option>Visa</option>
-                                    <option>Mastercard</option>
-                                </select>
-                                <div *ngIf="creditCardCardType?.invalid && (creditCardCardType?.dirty || creditCardCardType?.touched)" class="alert alert-danger mt-1">
-
-                                    <div *ngIf="creditCardCardType?.errors?.['required']">
-                                        Proszę wybrać typ karty
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div id="card-element">
+                        <!-- a Stripe element will be inserted here-->
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-2"> <label>Dane właściciela</label></div>
-                        <div class="col-md-9">
-                            <div class="input-space">
-                                <input formControlName="nameOnCard" type="text">
-                                <div *ngIf="creditCardNameOnCard?.invalid && (creditCardNameOnCard?.dirty || creditCardNameOnCard?.touched)" class="alert alert-danger mt-1">
-
-                                    <div *ngIf="creditCardNameOnCard?.errors?.['required'] || creditCardNameOnCard?.errors?.['notOnlyWhitespace']">
-                                        Proszę podać dane właściciela
-                                    </div>
-                                    <div *ngIf="creditCardNameOnCard?.errors?.['minlength']">
-                                        Dane właściciela powinny zawierać conajmniej 2 litery
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-2"> <label>Numer karty</label></div>
-                        <div class="col-md-9">
-                            <div class="input-space">
-                                <input formControlName="cardNumber" type="text">
-                                <div *ngIf="creditCardCardNumber?.invalid && (creditCardCardNumber?.dirty || creditCardCardNumber?.touched)" class="alert alert-danger mt-1">
-
-                                    <div *ngIf="creditCardCardNumber?.errors?.['required']">
-                                        Proszę podać numer karty
-                                    </div>
-                                    <div *ngIf="creditCardCardNumber?.errors?.['pattern']">
-                                        Numer karty powinien zawierać 16 cyfr
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-2"> <label>Kod CVV</label></div>
-                        <div class="col-md-9">
-                            <div class="input-space">
-                                <input formControlName="securityCode" type="text">
-                                <div *ngIf="creditCardSecurityCode?.invalid && (creditCardSecurityCode?.dirty || creditCardSecurityCode?.touched)" class="alert alert-danger mt-1">
-
-                                    <div *ngIf="creditCardSecurityCode?.errors?.['required']">
-                                        Proszę podać kod CVV
-                                    </div>
-                                    <div *ngIf="creditCardSecurityCode?.errors?.['pattern']">
-                                        Kod CVV powinien zawierać 3 cyfry
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-2"> <label>Miesiąc Month</label></div>
-                        <div class="col-md-9">
-                            <div class="input-space">
-                                <select formControlName="expirationMonth">
-                                    <option *ngFor="let month of creditCardMonths">
-                                        {{ month }}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-2"> <label>Rok Year</label></div>
-                        <div class="col-md-9">
-                            <div class="input-space">
-                                <select formControlName="expirationYear" (change)="handleMonthsAndYears()">
-                                    <option *ngFor="let year of creditCardYears">
-                                        {{ year }}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Used to display form errors-->
+                    <div id="card-errors" class="displayError.textContent !=='': 'alert alert-danger mt-1'"></div>
+                
+                
                 </div>
 
                 <!-- Order details -->

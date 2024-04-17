@@ -4,11 +4,13 @@ import { Router } from '@angular/router';
 import { Country } from 'src/app/overall/country';
 import { Order } from 'src/app/overall/order';
 import { OrderItem } from 'src/app/overall/order-item';
+import { PaymentInfo } from 'src/app/overall/payment-info';
 import { Purchase } from 'src/app/overall/purchase';
 import { CartService } from 'src/app/services/cart.service';
 import { CheckoutService } from 'src/app/services/checkout.service';
 import { SzumilasShopFormService } from 'src/app/services/szumilas-shop-form.service';
 import { FormValidation } from 'src/app/validation/form-validation';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-checkout',
@@ -28,6 +30,13 @@ export class CheckoutComponent implements OnInit {
 
   storage: Storage = sessionStorage;
 
+  stripe = Stripe(environment.stripePublishableKey);
+  paymentInfo: PaymentInfo = new PaymentInfo();
+  cardElement: any;
+  displayError: any = "";
+
+  isDisabled: boolean = false;
+
   constructor(private formBuilder: FormBuilder,
     private szumilasShopFormService: SzumilasShopFormService,
     private cartService: CartService,
@@ -35,6 +44,9 @@ export class CheckoutComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
+
+    // setup Stripe payment form
+    this.setupStripePaymentForm();
 
     this.reviewCartDetails();
 
@@ -88,36 +100,9 @@ export class CheckoutComponent implements OnInit {
           FormValidation.notOnlyWhiteSpace])
       }),
       creditCard: this.formBuilder.group({
-        cardType: new FormControl('',
-          [Validators.required]),
-        nameOnCard: new FormControl('',
-          [Validators.required,
-          Validators.minLength(2),
-          FormValidation.notOnlyWhiteSpace]),
-        cardNumber: new FormControl('',
-          [Validators.required, Validators.pattern('^[0-9]{16}$')]),
-        securityCode: new FormControl('',
-          [Validators.required, Validators.pattern('^[0-9]{3}$')]),
-        expirationMonth: [''],
-        expirationYear: ['']
+        
       })
     });
-
-    // populate credit card months
-    const startMonth: number = new Date().getMonth() + 1;
-
-    this.szumilasShopFormService.getCreditCardMonths(startMonth).subscribe(
-      data => {
-        this.creditCardMonths = data;
-      }
-    )
-
-    //populate credit card yers
-    this.szumilasShopFormService.getCreditCardYears().subscribe(
-      data => {
-        this.creditCardYears = data;
-      }
-    )
 
     // populate country
     this.szumilasShopFormService.getCountries().subscribe(
@@ -125,6 +110,31 @@ export class CheckoutComponent implements OnInit {
         this.countries = data;
       }
     )
+  }
+
+  setupStripePaymentForm() {
+    // get a handle to stripe elements
+    var elements = this.stripe.elements();
+
+    // create a card element ... and hide the zip-code field
+    this.cardElement = elements.create('card', {hidePostalCode: true});
+    
+    // add an instance of card UI component into the 'card-element'
+    this.cardElement.mount('#card-element');
+
+    // add event binding for the "change" event on the card element
+    this.cardElement.on('change', (event: any) => {
+      // ge a handle to card-errors element
+      this.displayError = document.getElementById('card-errors');
+
+      if(event.complete) {
+        this.displayError.textContent = "";
+      } else if (event.error) {
+        // show validation error to customer
+        this.displayError.textContent = event.error.message;
+      }
+
+    });
   }
 
   reviewCartDetails() {
@@ -192,32 +202,83 @@ export class CheckoutComponent implements OnInit {
     // populate purchase - customer
     purchase.customer = this.checkoutFormGroup.controls['customer'].value;
 
-    // populate ourchase -shipping address
+    // populate purchase -shipping address
     purchase.shippingAddress = this.checkoutFormGroup.controls['shippingAddress'].value;
-    const shippingAddressCountry: Country = JSON.parse(JSON.stringify(purchase.shippingAddress?.country));
-    purchase.shippingAddress!.country = shippingAddressCountry.name;
+    const shippingCountry: Country = JSON.parse(JSON.stringify(purchase.shippingAddress?.country));
+    purchase.shippingAddress!.country = shippingCountry.name;
 
-    // populate ourchase -billing address
+    // populate purchase -billing address
     purchase.billingAddress = this.checkoutFormGroup.controls['billingAddress'].value;
-    const billingAddressCountry: Country = JSON.parse(JSON.stringify(purchase.billingAddress?.country));
-    purchase.billingAddress!.country = billingAddressCountry.name;
+    const billingCountry: Country = JSON.parse(JSON.stringify(purchase.billingAddress?.country));
+    purchase.billingAddress!.country = billingCountry.name;
+
 
     // populate purchase - order and orderItems
     purchase.order = order;
     purchase.orderItems = orderItems;
 
-    // call REST API via the CheckoutService
-    this.checkoutService.placeOrder(purchase).subscribe({
-      next: response => {
-        alert(`Twoje zamówienie zostało złożone pomyślnie. \nNumer zamówienia: ${response.orderTrackingNumber}`);
+    // compute payment info
+    this.paymentInfo.amount = Math.round(this.totalPrice * 100);
+    this.paymentInfo.currency = "PLN";
+    this.paymentInfo.receiptEmail = purchase.customer?.email;
 
-        // reset cart
-        this.resetCart();
-      },
-      error: err => {
-        alert(`Wystąpił błąd przy składaniu zamówienia: ${err.message}`);
-      }
-    });
+    // if valid form then
+    // -create payment intent
+    // -confirm card payment
+    // -place order
+    if (!this.checkoutFormGroup.invalid && this.displayError.textContent === "") {
+
+      this.isDisabled = true;
+      this.checkoutService.createPaymentIntent(this.paymentInfo).subscribe(
+        (paymentIntentResponse) => {
+          this.stripe.confirmCardPayment(paymentIntentResponse.client_secret,
+            {
+              payment_method: {
+                card: this.cardElement,
+                billing_details: {
+                  email: purchase.customer?.email,
+                  name: `${purchase.customer?.firstName} ${purchase.customer?.lastName}`,
+                  address: {
+                    line1: purchase.billingAddress?.street,
+                    city: purchase.billingAddress?.city,
+                    postal_code: purchase.billingAddress?.zipCode,
+                    country: "PL"
+                  }
+                }
+              }
+
+
+            }, { handleActions: false })
+          .then((result: any) => {
+            if (result.error) {
+              // inform the customer there was an error
+              alert(`Wystapił błąd: ${result.error.message}`);
+              this.isDisabled = false;
+            } else {
+              // call REST API via the CheckoutService
+              this.checkoutService.placeOrder(purchase).subscribe({
+                next: (response: any) => {
+                  alert(`Twoje zamówienie zostało złożone.\nNumer zamówienia: ${response.orderTrackingNumber}`);
+
+
+                  // reset cart
+                  this.resetCart();
+                  this.isDisabled = false;
+                },
+                error: (err: any) => {
+                  alert(`Wystapił błąd: ${err.message}`);
+                  this.isDisabled = false;
+                }
+              })
+            }            
+          });
+        }
+      );
+    } else {
+      this.checkoutFormGroup.markAllAsTouched();
+      return;
+    }
+
   }
 
   resetCart() {
@@ -233,27 +294,6 @@ export class CheckoutComponent implements OnInit {
 
     // navigate back to the products page
     this.router.navigateByUrl("/products");
-  }
-
-  handleMonthsAndYears() {
-    const creditCardFormGroup = this.checkoutFormGroup.get('creditCard');
-    const currentYear: number = new Date().getFullYear();
-    const selectedYear: number = Number(creditCardFormGroup?.value.expirationYear);
-
-    // if the current year equals the selected year, then start with the current month
-    let startMonth: number;
-
-    if (currentYear === selectedYear) {
-      startMonth = new Date().getMonth() + 1;
-    } else {
-      startMonth = 1;
-    }
-
-    this.szumilasShopFormService.getCreditCardMonths(startMonth).subscribe(
-      data => {
-        this.creditCardMonths = data;
-      }
-    )
   }
 
 }
