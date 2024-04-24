@@ -3,7 +3,9 @@
         <img src="{{ product.imageUrl }}" alt="product-image" class="detail-img mt-5">
         <h3>{{ product.name }}</h3>
         <h3 class="price">{{ product.unitPrice }} zł</h3>
-        <button (click)="addToCart()" class="primary-btn">Dodaj do koszyka</button>
+        <div *ngIf="roles.indexOf('admin') === -1">
+            <button (click)="addToCart()" class="primary-btn" [disabled]="roles.indexOf('admin') > -1">Dodaj do koszyka</button>
+        </div>
         <hr>
         <h4>Opis</h4>
         <p>{{ product.description }}</p>

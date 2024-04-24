@@ -50,16 +50,25 @@ export class CheckoutComponent implements OnInit {
 
     this.reviewCartDetails();
 
-    // read theuser's email address from browser storage
-    const theEmail = JSON.parse(this.storage.getItem('userEmail')!);
+    // read the user's address from browser storage
+    let theFirstName = '';
+    let theLastName = '';
+    let theEmail = '';
+    const claims = JSON.parse(sessionStorage.getItem("id_token_claims_obj")!);
+
+    if(claims) {
+      theFirstName = claims.given_name;
+      theLastName = claims.family_name;
+      theEmail = claims.email;
+    }
 
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
-        firstName: new FormControl('',
+        firstName: new FormControl(theFirstName,
           [Validators.required,
           Validators.minLength(2),
           FormValidation.notOnlyWhiteSpace]),
-        lastName: new FormControl('',
+        lastName: new FormControl(theLastName,
           [Validators.required,
           Validators.minLength(2),
           FormValidation.notOnlyWhiteSpace]),
@@ -80,8 +89,7 @@ export class CheckoutComponent implements OnInit {
           [Validators.required]),
         zipCode: new FormControl('',
           [Validators.required,
-          Validators.minLength(2),
-          FormValidation.notOnlyWhiteSpace])
+          Validators.pattern('[0-9]{2}-[0-9]{3}')])
       }),
       billingAddress: this.formBuilder.group({
         street: new FormControl('',

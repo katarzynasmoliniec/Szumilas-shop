@@ -19,7 +19,10 @@
                             <h1>{{ tempProduct.name }}</h1>
                         </a>
                         <div class="price">{{ tempProduct.unitPrice }} zł</div>
-                        <button (click)="addToCart(tempProduct)" class="primary-btn">Dodaj do koszyka</button>
+                        <div *ngIf="roles.indexOf('admin') === -1">
+                            <button (click)="addToCart(tempProduct)" class="primary-btn">Dodaj do koszyka</button>
+                        </div>
+                        
                     </div>
                 </div>
 

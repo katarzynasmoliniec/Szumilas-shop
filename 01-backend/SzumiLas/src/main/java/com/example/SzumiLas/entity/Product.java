@@ -1,12 +1,15 @@
 package com.example.SzumiLas.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name ="product")
@@ -18,6 +21,7 @@ public class Product {
     @Column(name = "id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private ProductCategory category;
@@ -50,5 +54,18 @@ public class Product {
     @Column(name = "last_updated")
     @UpdateTimestamp
     private Date lastUpdated;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    private List<Image> images;
+
+    public void addImage(Image image) {
+        if (image != null) {
+            if ( images == null) {
+                images = new ArrayList<>();
+            }
+            images.add(image);
+            image.setProduct(this);
+        }
+    }
 
 }

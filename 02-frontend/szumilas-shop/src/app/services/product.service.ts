@@ -68,6 +68,7 @@ export class ProductService {
   }
 
   getProductCategories() {
+    
     return this.httpClient.get<GetResponseProductCategory>(this.categoryUrl).pipe(
       map(response => response._embedded.productCategory)
     );

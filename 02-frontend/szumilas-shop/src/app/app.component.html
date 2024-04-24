@@ -20,7 +20,11 @@
           <div class="header-wrap">
             <app-search></app-search>
             <app-login-status></app-login-status>
-            <app-cart-status></app-cart-status>
+            <button *ngIf="roles.indexOf('admin') > -1" routerLink="/add-product" class="au-btn-submit">Dodaj produkt</button>
+            <button routerLink="/order-history" *ngIf="(roles.indexOf('user') > -1) && (roles.indexOf('admin') === -1)" class="au-btn-submit">Zamówienia</button>
+          
+            <app-cart-status *ngIf="roles.indexOf('admin') === -1"></app-cart-status>
+            
           </div>
           <div class="account-wrap"></div>
         </div>
@@ -38,7 +42,6 @@
 
 <footer>
   <div>
-    Powyższa strona prowadzona jest w celach szkoleniowych, nie jest realnym sklepem internetowym. Zdjęcia pobrane z polarsport
-    
+    Powyższa strona prowadzona jest w celach szkoleniowych, nie jest realnym sklepem internetowym. Zdjęcia pobrane z polarsport.
   </div>
 </footer>

@@ -11,20 +11,19 @@ export class OrderHistoryComponent implements OnInit {
 
   orderHistoryList: OrderHistory[] = [];
   storage: Storage = sessionStorage;
+  userEmail: string = "";
 
   constructor(private orderHistoryService: OrderHistoryService) { }
 
   ngOnInit(): void {
+    this.userEmail = JSON.parse(this.storage.getItem("id_token_claims_obj")!).email;
     this.handleOrderHistory();
   }
 
   handleOrderHistory() {
 
-    // read the user's email from browers storage
-    const theEmail = JSON.parse(this.storage.getItem('userEmail')!);
-
     // subscribe data from the service
-    this.orderHistoryService.getOrderHistory(theEmail).subscribe(
+    this.orderHistoryService.getOrderHistory(this.userEmail).subscribe(
       data => {
         this.orderHistoryList = data._embedded.orders;
       }

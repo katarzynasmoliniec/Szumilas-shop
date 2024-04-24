@@ -280,10 +280,13 @@ input.au-input.au-input-xl{
 }
 
 .au-btn-submit{
-    position:relative;
+    position:relative!important;
     right:0;
-    min-width:95px;
+    min-width:95px!important;
     color:#fff;
+    padding:7px 20px!important;
+    text-align:center!important;
+    display:inline-block!important;
     border:1px solid #a56e08;
     -webkit-border-radius:3px;
     -moz-border-radius:3px;
@@ -299,13 +302,13 @@ input.au-input.au-input-xl{
     font-size:20px;
     color:#fff;
     position:absolute;
-    top:50%;
-    left:50%;
-    -webkit-transform:translate(-50%,-50%);
-    -moz-transform:translate(-50%,-50%);
-    -ms-transform:translate(-50%,-50%);
-    -o-transform:translate(-50%,-50%);
-    transform:translate(-50%,-50%)
+    top:50%!important;
+    left:50%!important;
+    -webkit-transform:translate(-50%,-50%)!important;
+    -moz-transform:translate(-50%,-50%)!important;
+    -ms-transform:translate(-50%,-50%)!important;
+    -o-transform:translate(-50%,-50%)!important;
+    transform:translate(-50%,-50%)!important
 }
 
 /* 

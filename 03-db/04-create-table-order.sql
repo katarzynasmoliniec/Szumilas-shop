@@ -8,16 +8,16 @@ USE `full-stack-szumilasapp`;
 -- Prep work
 --
 SET FOREIGN_KEY_CHECKS=0;
-DROP TABLE IF EXISTS `order_item`;
-DROP TABLE IF EXISTS `orders`;
-DROP TABLE IF EXISTS `customer`;
-DROP TABLE IF EXISTS `address`;
+DROP TABLE IF EXISTS `full-stack-szumilasapp`.`order_item`;
+DROP TABLE IF EXISTS `full-stack-szumilasapp`.`orders`;
+DROP TABLE IF EXISTS `full-stack-szumilasapp`.`customer`;
+DROP TABLE IF EXISTS `full-stack-szumilasapp`.`address`;
 SET FOREIGN_KEY_CHECKS=1;
 
 --
 -- Table structure for table `address`
 --
-CREATE TABLE `address` (
+CREATE TABLE `full-stack-szumilasapp`.`address` (
   `id` bigint NOT NULL primary key auto_increment,
   `city` varchar(255) DEFAULT NULL,
   `country` varchar(255) DEFAULT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE `address` (
 --
 -- Table structure for table `customer`
 --
-CREATE TABLE `customer` (
+CREATE TABLE `full-stack-szumilasapp`.`customer` (
   `id` bigint NOT NULL primary key auto_increment,
   `first_name` varchar(255) DEFAULT NULL,
   `last_name` varchar(255) DEFAULT NULL,
@@ -39,7 +39,7 @@ alter table customer add UNIQUE (email);
 --
 -- Table structure for table `orders`
 --
-CREATE TABLE `orders` (
+CREATE TABLE `full-stack-szumilasapp`.`orders` (
   `id` bigint NOT NULL primary key auto_increment,
   `order_tracking_number` varchar(255) DEFAULT NULL,
   `total_price` decimal(19,2) DEFAULT NULL,
@@ -59,7 +59,7 @@ alter table orders add foreign key (shipping_address_id) references address (id)
 --
 -- Table structure for table `order_items`
 --
-CREATE TABLE `order_item` (
+CREATE TABLE `full-stack-szumilasapp`.`order_item` (
   `id` bigint NOT NULL primary key auto_increment,
   `image_url` varchar(255) DEFAULT NULL,
   `quantity` int DEFAULT NULL,

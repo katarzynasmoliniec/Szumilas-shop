@@ -1,17 +1,26 @@
 package com.example.SzumiLas.config;
 
-import com.okta.spring.boot.oauth.Okta;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.accept.ContentNegotiationStrategy;
 import org.springframework.web.accept.HeaderContentNegotiationStrategy;
 
+@RequiredArgsConstructor
 @Configuration
-public class SecurityConfig {
+@EnableWebSecurity
+class SecurityConfig {
+
+    public static final String ADMIN = "admin";
+    public static final String USER = "user";
+    private final JwtAuthConverter jwtAuthConverter;
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -19,10 +28,20 @@ public class SecurityConfig {
         //protect endpoint /api/orders
         http.authorizeHttpRequests(requests ->
                         requests
-                                .requestMatchers("/api/orders/**")
-                                .authenticated()
+
+                .requestMatchers(HttpMethod.GET, "/api/cart-details/**").hasAuthority(USER)
+                .requestMatchers(HttpMethod.DELETE, "/api/images/**").hasAuthority(ADMIN)
+                .requestMatchers(HttpMethod.POST, "/api/images/**").hasAuthority((ADMIN))
+                .requestMatchers(HttpMethod.POST, "/api/products").hasAuthority(ADMIN)
+                .requestMatchers(HttpMethod.DELETE, "/api/products/**").hasAuthority(ADMIN)
+                .requestMatchers(HttpMethod.GET).permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/checkout/**" ).permitAll()
                                 .anyRequest().permitAll())
-                .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer.jwt(Customizer.withDefaults()));
+            .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer
+                .jwt()
+                .jwtAuthenticationConverter(jwtAuthConverter));
+
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // + CORS filters
         http.cors(Customizer.withDefaults());
@@ -30,10 +49,7 @@ public class SecurityConfig {
         // + content negotiation strategy
         http.setSharedObject(ContentNegotiationStrategy.class, new HeaderContentNegotiationStrategy());
 
-        // + non-empty response body for 401 (more friendly)
-        Okta.configureResourceServer401ResponseBody(http);
-
-        // we are not using Cookies for session tracking >> disable CSRF
+       // we are not using Cookies for session tracking >> disable CSRF
         http.csrf(AbstractHttpConfigurer::disable);
 
         return http.build();

@@ -135,8 +135,8 @@
                                     <div *ngIf="shippingAddressZipCode?.errors?.['required'] || shippingAddressZipCode?.errors?.['notOnlyWhitespace']">
                                         Proszę podać kod pocztowy
                                     </div>
-                                    <div *ngIf="shippingAddressZipCode?.errors?.['minlength']">
-                                        Kod pocztowy powinien zawierać conajmniej 2 litery
+                                    <div *ngIf="shippingAddressZipCode?.errors?.['pattern']">
+                                        Niepoprawny format kodu. Prawidłowy format to 00-000.
                                     </div>
                                 </div>
                             </div>
@@ -251,10 +251,11 @@
                 <!-- Order details -->
                 <div class="form-area">
                     <h3>Podsumowanie</h3>
+                    <hr>
 
                     <p>Ilość: {{ totalQuantity }}</p>
                     <p>Wysyłka: Darmowa</p>
-                    <p>Łącznie: {{ totalPrice}} zł</p>
+                    <p>Łącznie do zapłaty: {{ totalPrice}} zł</p>
                 </div>
 
                 <!-- submit button-->

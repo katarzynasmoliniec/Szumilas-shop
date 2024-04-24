@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { OAuthService } from 'angular-oauth2-oidc';
 import { CartItem } from 'src/app/overall/cart-item';
 import { Product } from 'src/app/overall/product';
 import { CartService } from 'src/app/services/cart.service';
@@ -27,15 +28,22 @@ export class ProductListComponent implements OnInit {
 
   previousKeyword: string = "";
 
+  roles: string[] = [];
+
   constructor(private productService: ProductService,
               private cartService: CartService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private oauthService: OAuthService) { }
 
   ngOnInit(): void {
 
     this.route.paramMap.subscribe(() => {
       this.listProducts();
     });
+    
+    if(this.oauthService.hasValidAccessToken()) {
+      this.roles = this.oauthService.getIdentityClaims()['groups'];
+    }
   }
 
   listProducts() {

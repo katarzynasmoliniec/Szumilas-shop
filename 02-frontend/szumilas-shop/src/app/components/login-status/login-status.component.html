@@ -1,13 +1,7 @@
 <div class="login-status-header">
-
-    <div *ngIf="isAuthenticated && userFullName" class="login-status-user-info">
+    <div *ngIf="token && userFullName"  class="login-status-user-info">
         Witaj ponownie {{ userFullName }}!
     </div>
-
-    <button *ngIf="!isAuthenticated" routerLink="/login" class="security-btn">Zaloguj</button>
-
-    <button *ngIf="isAuthenticated" (click)="logout()" class="security-btn">Wyloguj</button>
-
-    <button *ngIf="isAuthenticated" routerLink="/order-history" class="security-btn mx-1">Zamówienia</button>
-
+    <button *ngIf="!token" (click)="login()" class="au-btn-submit">Zaloguj</button>
+    <button  *ngIf="token" (click)="logout()" class="au-btn-submit">Wyloguj</button>
 </div>

@@ -20,6 +20,7 @@ export class OrderHistoryService {
 
     return this.httpClient.get<GetResponseOrderHistory>(orderHistoryUrl);
   }
+
 }
 
 interface GetResponseOrderHistory {
