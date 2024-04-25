@@ -28,7 +28,7 @@ class SecurityConfig {
         //protect endpoint /api/orders
         http.authorizeHttpRequests(requests ->
                         requests
-
+                                .requestMatchers(HttpMethod.GET, "/api/orders/**").hasAuthority(USER)
                 .requestMatchers(HttpMethod.GET, "/api/cart-details/**").hasAuthority(USER)
                 .requestMatchers(HttpMethod.DELETE, "/api/images/**").hasAuthority(ADMIN)
                 .requestMatchers(HttpMethod.POST, "/api/images/**").hasAuthority((ADMIN))
@@ -36,7 +36,7 @@ class SecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/api/products/**").hasAuthority(ADMIN)
                 .requestMatchers(HttpMethod.GET).permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/checkout/**" ).permitAll()
-                                .anyRequest().permitAll())
+                                .anyRequest().authenticated())
             .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer
                 .jwt()
                 .jwtAuthenticationConverter(jwtAuthConverter));

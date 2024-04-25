@@ -23,9 +23,13 @@ import { FormsModule } from '@angular/forms';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddProductComponent } from './components/add-product/add-product.component';
+import { ImagesComponent } from './components/images/images.component';
+import { UploadFileComponent } from './components/upload-file/upload-file.component';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 const routes: Routes = [
   {path: 'add-product', component: AddProductComponent, canActivate: [AuthGuard], data: { roles: ['admin']} },
+  {path: 'products/:id/images', component: ImagesComponent, canActivate: [AuthGuard], data: { roles: ['admin']} },
   {path: 'order-history', component: OrderHistoryComponent, canActivate: [AuthGuard], data: { roles: ['user']} },
   {path: 'checkout', component: CheckoutComponent},
   {path: 'cart-datails', component: CartDetailsComponent},
@@ -51,7 +55,9 @@ const routes: Routes = [
     CartDetailsComponent,
     LoginStatusComponent,
     OrderHistoryComponent,
-    AddProductComponent
+    AddProductComponent,
+    ImagesComponent,
+    UploadFileComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -66,6 +72,7 @@ const routes: Routes = [
           sendAccessToken: true
       }
   }),
+  NgxDropzoneModule,
   FormsModule,
   TypeaheadModule.forRoot(),
   BrowserAnimationsModule

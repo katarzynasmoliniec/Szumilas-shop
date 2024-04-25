@@ -1,0 +1,12 @@
+<div class="row gy-3 d-flex justify-content-center">
+
+    <div class="image-wrapper position-relative " *ngFor="let image of images">
+        <div (click)="removeImage(image)" class="trash-image position-absolute top-0 end-0 mt-1 me-3 d-none">
+            <i class="fa fa-solid fa-trash fa-shake"></i>
+        </div>
+        <img class="img-fluid" [src]="image.url" alt="empty">
+    </div>
+</div>
+
+<app-upload-file></app-upload-file>
+<button type="button" (click)="uploadFile()" class="btn btn-info">Wyślij</button>

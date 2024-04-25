@@ -1,11 +1,17 @@
 <div class="detail-section">
     <div *ngIf="product" class="container-fluid">
+
         <img src="{{ product.imageUrl }}" alt="product-image" class="detail-img mt-5">
         <h3>{{ product.name }}</h3>
         <h3 class="price">{{ product.unitPrice }} zł</h3>
         <div *ngIf="roles.indexOf('admin') === -1">
             <button (click)="addToCart()" class="primary-btn" [disabled]="roles.indexOf('admin') > -1">Dodaj do koszyka</button>
         </div>
+        <span [hidden]="roles.indexOf('admin') == -1">
+            <button  type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-danger btn-small d-block mt-1">
+                    <i class="fa fa-trash pe-2" aria-hidden="true"></i>Usuń produkt</button>
+        </span>
+
         <hr>
         <h4>Opis</h4>
         <p>{{ product.description }}</p>
@@ -13,3 +19,21 @@
         <a routerLink="/products" class="link-secondary link-underline link-underline-opacity-0 mt-4">Powrót do produktów</a>
     </div>
 </div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Usuń produkt</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Czy chcesz usunąć ten produkt?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+          <button (click)="deleteProduct()" type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fa fa-trash pe-2" aria-hidden="true"></i>Usuń produkt</button>
+        </div>
+      </div>
+    </div>
+  </div>
